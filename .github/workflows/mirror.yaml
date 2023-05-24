@@ -1,0 +1,19 @@
+name: 'Mirror'
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+
+jobs:
+  mirror:
+    name: Automatic Mirror
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        
+      - name: Mirroring
+        run: |
+          git remote add --mirror=fetch mirror "https://github.com/initOS/dob-lib.git"
+          git fetch mirror +refs/heads/*:refs/remotes/origin/*
+          git push --force --mirror --prune origin
